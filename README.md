@@ -82,9 +82,30 @@ The loss after training is shown next:
 
 ##b) Optimized implementation
 
-Instead of constructing a tensorflow tree for each sentence, we first convert the original tree into 4 lists
+Instead of constructing a tensorflow tree for each sentence, we first convert the original tree into 4 lists (tree-array)
 that we will use later in tensorflow to fill in a symbolic matrix that will serve as a cache to store intermediate
 computations.
+
+    #Tree array
+    #First column. Left child index
+    #Second column. Right child index
+    #Third column. Word embedding id
+    #Last columnn. Rating.
+    array([[   -1,    -1,   553,     0],
+           [   -1,    -1,     0,     0],
+           [   -1,    -1,   743,     0],
+           [    1,     2,    -1,     0],
+           [   -1,    -1,    14,     0],
+           [   -1,    -1,   149,     0],
+           [   -1,    -1, 12387,     1],
+           [    5,     6,    -1,     1],
+           [    4,     7,    -1,     1],
+           [   -1,    -1,   187,     0],
+           [    8,     9,    -1,     1],
+           [   -1,    -1,     2,     0],
+           [   10,    11,    -1,     1],
+           [    3,    12,    -1,     1],
+           [    0,    13,    -1,     1]])
 
 These tree-array has the property that each row only depends on previous rows. That is, each row represents a node in the tree
 and its children are previous rows in the tree-array. Then, use can use the tf.while_loop operation to iterate throw this array in
